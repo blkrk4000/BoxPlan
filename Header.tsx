@@ -46,7 +46,7 @@ export const Header = ({
           </div>
           <h1 style={styles.logoText}>BoxPlan</h1>
         </div>
-        <span style={styles.versionBadge}>v0.1.7</span>
+        <span style={styles.versionBadge}>v0.2.0</span>
       </div>
 
       {/* Center: Search, NavPill, DateNav */}

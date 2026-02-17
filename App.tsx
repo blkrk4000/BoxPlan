@@ -37,6 +37,61 @@ export const App = () => {
   // Adjust JS getDay() (0=Sun, 1=Mon) to our array (0=Mon...6=Sun)
   const currentRealDayIndex = (today.getDay() + 6) % 7; 
 
+  // --- SHORTCUTS & FOCUS LOGIC ---
+
+  // 1. Keyboard Shortcut: Cmd + 1 (Toggle View)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+1 or Ctrl+1 to toggle view
+      if ((e.metaKey || e.ctrlKey) && e.key === "1") {
+        e.preventDefault();
+        setView((prev) => (prev === "week" ? "year" : "week"));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // 2. Auto-Focus Logic
+  useEffect(() => {
+    // Only auto-focus if we are currently looking at the "real" today period.
+    // This prevents jumping focus if user is looking at history/future.
+    let targetId = "";
+    let shouldFocus = false;
+
+    if (view === "week") {
+      // Check if visible week matches real week
+      if (week === currentRealWeek && isoYear === currentRealYear) {
+        targetId = `mp_w_${currentRealYear}_${currentRealWeek}_${currentRealDayIndex}`;
+        shouldFocus = true;
+      }
+    } else {
+      // Year view: Check if visible year matches real year
+      if (year === currentRealYear) {
+        targetId = `mp_y_${currentRealYear}_${currentRealMonth}`;
+        shouldFocus = true;
+      }
+    }
+
+    if (shouldFocus && targetId) {
+      // Small timeout to allow React to render the DOM
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId) as HTMLTextAreaElement;
+        if (el) {
+          el.focus();
+          // Move cursor to end of text
+          const len = el.value.length;
+          el.setSelectionRange(len, len);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [view, week, isoYear, year, currentRealWeek, currentRealYear, currentRealMonth, currentRealDayIndex]);
+
+
+  // --- EXISTING EFFECTS ---
+
   // Load theme and settings from local storage
   useEffect(() => {
     const savedMode = localStorage.getItem("masterplan_theme_mode") as ThemeMode;
@@ -220,7 +275,7 @@ export const App = () => {
               const prevId = `mp_y_${year}_${prevIndex}`;
               const nextId = `mp_y_${year}_${nextIndex}`;
 
-              const isThisMonth = year === new Date().getFullYear() && index === currentRealMonth;
+              const isThisMonth = year === currentRealYear && index === currentRealMonth;
 
               return (
                 <CanvasCard

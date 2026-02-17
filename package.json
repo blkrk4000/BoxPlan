@@ -1,6 +1,6 @@
 {
   "name": "boxplan-app",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "BoxPlan App for Macbook Air",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "start": "npm run build && electron .",
     "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run build && electron-builder"
+    "dist": "rm -rf release && npm run build && electron-builder"
   },
   "build": {
     "appId": "com.boxplan.app",

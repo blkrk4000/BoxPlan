@@ -223,6 +223,12 @@ export const SettingsModal = ({
               <span style={styles.settingsLabel}>Tastaturkürzel</span>
               
               <div style={styles.shortcutRow}>
+                <span>Ansicht wechseln</span>
+                <div>
+                  <span style={styles.keyCap}>Cmd</span> + <span style={styles.keyCap}>1</span>
+                </div>
+              </div>
+              <div style={styles.shortcutRow}>
                 <span>Nächstes Feld</span>
                 <span style={styles.keyCap}>Tab</span>
               </div>
@@ -253,7 +259,7 @@ export const SettingsModal = ({
           {activeTab === "about" && (
             <div style={styles.aboutContainer}>
               <h3 style={{color: 'var(--text-primary)', marginBottom: '0px'}}>BoxPlan</h3>
-              <p style={{marginTop: '0px', fontSize: '12px', color: 'var(--text-secondary)'}}>v0.1.7</p>
+              <p style={{marginTop: '0px', fontSize: '12px', color: 'var(--text-secondary)'}}>v0.2.0</p>
               
               <div style={{marginTop: '10px', fontSize: '13px', lineHeight: '1.6'}}>
                 Minimalistischer Planer für macOS.<br />
