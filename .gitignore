@@ -4,7 +4,6 @@ node_modules/
 # Production
 dist/
 out/
-build/
 release/
 
 # System Files
