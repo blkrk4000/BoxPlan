@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "./styles";
 import { ChevronLeft, ChevronRight, BoxIcon, SettingsIcon, CalendarIcon, PaletteIcon, SearchIcon, SunIcon, MoonIcon, MinusIcon, PlusIcon } from "./Icons";
 import { ViewMode, ThemeMode, ThemeName, THEMES } from "./types";
@@ -36,6 +36,16 @@ export const Header = ({
 }: HeaderProps) => {
   const [isThemeOpen, setIsThemeOpen] = useState(false);
 
+  // Handle ESC key to close theme popover
+  useEffect(() => {
+    if (!isThemeOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsThemeOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isThemeOpen]);
+
   return (
     <header style={styles.header}>
       {/* Left: Logo & Title - Packed tightly */}
@@ -54,6 +64,7 @@ export const Header = ({
         <button 
           onClick={onOpenSearch}
           style={styles.iconButton}
+          className="icon-btn"
           title="Suchen"
         >
           <SearchIcon />
@@ -66,6 +77,7 @@ export const Header = ({
               ...styles.navButton,
               ...(view === "week" ? styles.navButtonActive : {}),
             }}
+            className={`nav-btn ${view === "week" ? 'active' : ''}`}
           >
             Wochenplanung
           </button>
@@ -75,25 +87,37 @@ export const Header = ({
               ...styles.navButton,
               ...(view === "year" ? styles.navButtonActive : {}),
             }}
+            className={`nav-btn ${view === "year" ? 'active' : ''}`}
           >
             Jahresübersicht
           </button>
         </div>
         
         <div style={styles.dateNav}>
-          <button onClick={() => navigateDate(-1)} style={styles.navArrow} title="Zurück">
+          <button 
+            onClick={() => navigateDate(-1)} 
+            style={styles.navArrow} 
+            className="icon-btn-small"
+            title="Zurück"
+          >
             <ChevronLeft />
           </button>
           <button 
             onClick={onJumpToday} 
             style={styles.todayButton}
+            className="btn-secondary"
             title="Zu heute springen"
           >
             <CalendarIcon />
             Heute
           </button>
           <span style={styles.dateLabel}>{dateLabel}</span>
-          <button onClick={() => navigateDate(1)} style={styles.navArrow} title="Weiter">
+          <button 
+            onClick={() => navigateDate(1)} 
+            style={styles.navArrow} 
+            className="icon-btn-small"
+            title="Weiter"
+          >
             <ChevronRight />
           </button>
         </div>
@@ -105,6 +129,7 @@ export const Header = ({
           <button 
             onClick={() => setIsThemeOpen(!isThemeOpen)} 
             style={styles.iconButton}
+            className="icon-btn"
             title="Design anpassen"
           >
             <PaletteIcon />
@@ -124,6 +149,7 @@ export const Header = ({
                       ...styles.themeButton,
                       borderColor: themeMode === 'light' ? 'var(--text-primary)' : 'var(--nav-bg)'
                     }} 
+                    className="theme-btn"
                     onClick={() => themeMode === 'dark' && toggleThemeMode()}
                   >
                     <SunIcon /> Light
@@ -133,6 +159,7 @@ export const Header = ({
                       ...styles.themeButton,
                       borderColor: themeMode === 'dark' ? 'var(--text-primary)' : 'var(--nav-bg)'
                     }} 
+                    className="theme-btn"
                     onClick={() => themeMode === 'light' && toggleThemeMode()}
                   >
                     <MoonIcon /> Dark
@@ -154,6 +181,7 @@ export const Header = ({
                           ? `2px solid var(--text-primary)` 
                           : "2px solid transparent",
                       }}
+                      className="icon-btn"
                     />
                   ))}
                 </div>
@@ -161,9 +189,21 @@ export const Header = ({
                 <div style={styles.fontSizeControl}>
                   <span style={{...styles.settingsLabel, marginBottom: 0}}>Schriftgröße</span>
                   <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                    <button style={styles.fontSizeBtn} onClick={() => setFontSize(-1)}><MinusIcon/></button>
+                    <button 
+                      style={styles.fontSizeBtn} 
+                      className="btn-secondary"
+                      onClick={() => setFontSize(-1)}
+                    >
+                      <MinusIcon/>
+                    </button>
                     <span style={styles.fontSizeDisplay}>{fontSize}px</span>
-                    <button style={styles.fontSizeBtn} onClick={() => setFontSize(1)}><PlusIcon/></button>
+                    <button 
+                      style={styles.fontSizeBtn} 
+                      className="btn-secondary"
+                      onClick={() => setFontSize(1)}
+                    >
+                      <PlusIcon/>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -174,6 +214,7 @@ export const Header = ({
         <button 
           onClick={onOpenSettings} 
           style={styles.settingsButton}
+          className="icon-btn"
           title="Einstellungen"
         >
           <SettingsIcon />

@@ -26,6 +26,15 @@ export const SearchModal = ({ onClose, onNavigate }: SearchModalProps) => {
     inputRef.current?.focus();
   }, []);
 
+  // Handle ESC key to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -109,7 +118,7 @@ export const SearchModal = ({ onClose, onNavigate }: SearchModalProps) => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button style={styles.modalCloseBtn} onClick={onClose}>
+          <button style={styles.modalCloseBtn} className="icon-btn" onClick={onClose}>
             <XIcon />
           </button>
         </div>
@@ -121,9 +130,8 @@ export const SearchModal = ({ onClose, onNavigate }: SearchModalProps) => {
             <div 
               key={res.id} 
               style={styles.searchResultItem}
+              className="search-item"
               onClick={() => handleSelect(res)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--nav-bg)"}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
             >
               <div style={styles.resultTitle}>{res.label}</div>
               <div style={styles.resultPreview}>{res.content}</div>

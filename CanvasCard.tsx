@@ -93,7 +93,8 @@ export const CanvasCard = ({
           {isToday && showTodayLabel && <span style={{marginLeft: "6px", opacity: 0.7}}>• Heute</span>}
         </div>
         <button 
-          style={{...styles.cardClearBtn, opacity: content ? 0.4 : 0}} 
+          style={{...styles.cardClearBtn, opacity: content ? 0.6 : 0}} 
+          className="icon-btn-small"
           onClick={handleClear}
           disabled={!content}
           title="Feld leeren"

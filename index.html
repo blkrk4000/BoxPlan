@@ -40,6 +40,11 @@
         color: var(--text-secondary);
         opacity: 0.5;
       }
+      
+      input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.5;
+      }
 
       #root {
         height: 100%;
@@ -47,6 +52,122 @@
         flex-direction: column;
         position: relative;
       }
+
+      /* --- Global Interactive Classes --- */
+
+      /* Icon Buttons (Round) */
+      .icon-btn {
+        border-radius: 50%;
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease !important;
+      }
+      .icon-btn:hover {
+        background-color: var(--nav-bg) !important;
+        color: var(--text-primary) !important;
+      }
+      .icon-btn:active {
+        transform: scale(0.92);
+      }
+
+      /* Small Icon Button (e.g. Trash in Card) */
+      .icon-btn-small {
+        border-radius: 4px;
+        transition: all 0.2s ease !important;
+      }
+      .icon-btn-small:hover:not(:disabled) {
+        background-color: var(--nav-bg) !important;
+        color: #ef4444 !important; /* Red on hover */
+        opacity: 1 !important;
+      }
+      .icon-btn-small:disabled {
+        cursor: default;
+      }
+
+      /* Navigation Pills */
+      .nav-btn {
+        transition: background-color 0.2s ease, color 0.2s ease !important;
+      }
+      .nav-btn:hover:not(.active) {
+        background-color: rgba(128, 128, 128, 0.15) !important; /* Subtle tint works in light/dark */
+        color: var(--text-primary) !important;
+      }
+
+      /* Primary Actions */
+      .btn-primary {
+        transition: opacity 0.2s ease, transform 0.1s ease !important;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+      .btn-primary:active {
+        transform: scale(0.98);
+      }
+
+      /* Secondary Actions */
+      .btn-secondary {
+        transition: background-color 0.2s ease, transform 0.1s ease !important;
+      }
+      .btn-secondary:hover {
+        background-color: var(--nav-bg) !important;
+      }
+      .btn-secondary:active {
+        transform: scale(0.98);
+      }
+
+      /* Danger Actions */
+      .btn-danger {
+        transition: background-color 0.2s ease, transform 0.1s ease !important;
+      }
+      .btn-danger:hover {
+        background-color: rgba(239, 68, 68, 0.1) !important;
+      }
+      .btn-danger:active {
+        transform: scale(0.98);
+      }
+
+      /* Tab Buttons */
+      .tab-btn {
+        transition: all 0.2s ease !important;
+      }
+      .tab-btn:hover:not(.active) {
+        background-color: var(--nav-bg) !important;
+        color: var(--text-primary) !important;
+      }
+      
+      /* Theme Option Buttons */
+      .theme-btn {
+        transition: border-color 0.2s ease, transform 0.1s ease !important;
+      }
+      .theme-btn:hover {
+         border-color: var(--text-secondary) !important;
+      }
+      .theme-btn:active {
+         transform: scale(0.98);
+      }
+
+      /* Search Results */
+      .search-item {
+        transition: background-color 0.15s ease !important;
+      }
+      .search-item:hover {
+        background-color: var(--nav-bg) !important;
+      }
+      
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--nav-bg);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-secondary);
+      }
+
     </style>
 <script type="importmap">
 {

@@ -32,6 +32,15 @@ export const SettingsModal = ({
     setYearTemplate(localStorage.getItem("boxplan_template_year") || "");
   }, []);
 
+  // Handle ESC key to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   const saveWeekTemplate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
     setWeekTemplate(val);
@@ -99,7 +108,7 @@ export const SettingsModal = ({
       <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div style={styles.modalHeader}>
           <h2 style={styles.modalTitle}>Einstellungen</h2>
-          <button style={styles.modalCloseBtn} onClick={onClose}>
+          <button style={styles.modalCloseBtn} className="icon-btn" onClick={onClose}>
             <XIcon />
           </button>
         </div>
@@ -108,24 +117,28 @@ export const SettingsModal = ({
         <div style={styles.tabContainer}>
           <button 
             style={{...styles.tabButton, ...(activeTab === "templates" ? styles.tabButtonActive : {})}}
+            className={`tab-btn ${activeTab === "templates" ? 'active' : ''}`}
             onClick={() => setActiveTab("templates")}
           >
             Templates
           </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "data" ? styles.tabButtonActive : {})}}
+            className={`tab-btn ${activeTab === "data" ? 'active' : ''}`}
             onClick={() => setActiveTab("data")}
           >
             Daten
           </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "docs" ? styles.tabButtonActive : {})}}
+            className={`tab-btn ${activeTab === "docs" ? 'active' : ''}`}
             onClick={() => setActiveTab("docs")}
           >
             Hilfe
           </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "about" ? styles.tabButtonActive : {})}}
+            className={`tab-btn ${activeTab === "about" ? 'active' : ''}`}
             onClick={() => setActiveTab("about")}
           >
             Über
@@ -144,9 +157,11 @@ export const SettingsModal = ({
                   onChange={saveWeekTemplate}
                   placeholder="Standard-Inhalt für neue Wochen..."
                   spellCheck={false}
+                  className="input-focus"
                 />
                 <button 
                   style={styles.secondaryButton}
+                  className="btn-secondary"
                   onClick={() => {
                     onApplyTemplate("week", weekTemplate);
                     onClose();
@@ -164,9 +179,11 @@ export const SettingsModal = ({
                   onChange={saveYearTemplate}
                   placeholder="Standard-Inhalt für Monate..."
                   spellCheck={false}
+                  className="input-focus"
                 />
                 <button 
                   style={styles.secondaryButton}
+                  className="btn-secondary"
                   onClick={() => {
                     onApplyTemplate("year", yearTemplate);
                     onClose();
@@ -184,12 +201,12 @@ export const SettingsModal = ({
                <div style={styles.settingsSection}>
                 <span style={styles.settingsLabel}>Backup</span>
                 <div style={{display: 'flex', gap: '10px', flexDirection: 'column'}}>
-                  <button style={styles.actionButton} onClick={handleExport}>
+                  <button style={styles.actionButton} className="btn-primary" onClick={handleExport}>
                     <DownloadIcon /> Backup erstellen (.json)
                   </button>
                   
                   <label style={styles.fileInputLabel}>
-                    <div style={styles.secondaryButton}>
+                    <div style={styles.secondaryButton} className="btn-secondary">
                        <UploadIcon /> Backup wiederherstellen
                     </div>
                     <input 
@@ -210,7 +227,7 @@ export const SettingsModal = ({
                 <p style={{fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px'}}>
                   Löscht alle Einträge der aktuell angezeigten Ansicht (Jahr oder Woche).
                 </p>
-                <button style={styles.dangerButton} onClick={handleClear}>
+                <button style={styles.dangerButton} className="btn-danger" onClick={handleClear}>
                   <TrashIcon /> Ansicht leeren
                 </button>
               </div>
@@ -241,6 +258,10 @@ export const SettingsModal = ({
                <div style={styles.shortcutRow}>
                 <span>Neue Zeile</span>
                 <span style={styles.keyCap}>Enter</span>
+              </div>
+              <div style={styles.shortcutRow}>
+                <span>Dialog schließen</span>
+                <span style={styles.keyCap}>Esc</span>
               </div>
               
               <br />

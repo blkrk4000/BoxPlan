@@ -29,10 +29,9 @@ export const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    // Removed flex: 1 to make it compact left-aligned
   },
   headerRight: {
-    flex: 1, // Takes up remaining space to push center content
+    flex: 1, 
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
@@ -80,20 +79,18 @@ export const styles: Record<string, React.CSSProperties> = {
     borderRadius: "16px", 
     padding: "2px",
     gap: "2px",
-    transition: "background-color 0.3s ease",
     // @ts-ignore
     WebkitAppRegion: "no-drag", 
   },
   navButton: {
     border: "none",
     background: "transparent",
-    padding: "3px 12px", 
+    padding: "4px 12px", // Increased vertical padding slightly
     borderRadius: "14px",
     fontSize: "12px",
     fontWeight: 500,
     cursor: "pointer",
     color: "var(--nav-text)",
-    transition: "all 0.2s ease",
     whiteSpace: "nowrap",
   },
   navButtonActive: {
@@ -122,12 +119,11 @@ export const styles: Record<string, React.CSSProperties> = {
     border: "none",
     cursor: "pointer",
     color: "var(--text-secondary)",
-    padding: "3px",
+    padding: "6px", // Larger tap area
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "4px",
-    transition: "color 0.2s ease, background-color 0.2s ease",
+    borderRadius: "6px",
     // @ts-ignore
     WebkitAppRegion: "no-drag", 
   },
@@ -144,7 +140,6 @@ export const styles: Record<string, React.CSSProperties> = {
     borderRadius: "16px",
     fontSize: "12px",
     fontWeight: 600,
-    transition: "background-color 0.2s ease, color 0.2s ease",
     gap: "6px",
     whiteSpace: "nowrap",
     // @ts-ignore
@@ -160,8 +155,20 @@ export const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     padding: "8px",
     borderRadius: "50%",
-    transition: "background-color 0.2s ease, color 0.2s ease",
     position: "relative",
+    // @ts-ignore
+    WebkitAppRegion: "no-drag",
+  },
+  settingsButton: {
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    color: "var(--text-secondary)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "8px",
+    borderRadius: "50%",
     // @ts-ignore
     WebkitAppRegion: "no-drag",
   },
@@ -175,13 +182,13 @@ export const styles: Record<string, React.CSSProperties> = {
     backgroundColor: "var(--card-bg)",
     borderRadius: "12px",
     boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-    padding: "12px",
+    padding: "16px",
     zIndex: 2000,
     border: "1px solid var(--nav-bg)",
-    width: "200px",
+    width: "220px",
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
+    gap: "16px",
   },
   
   // --- Search Overlay ---
@@ -240,7 +247,6 @@ export const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     gap: "4px",
-    transition: "background-color 0.2s ease",
     color: "var(--text-primary)",
   },
   searchResultHighlight: {
@@ -291,8 +297,8 @@ export const styles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     overflow: "hidden",
     transition: "box-shadow 0.2s ease, background-color 0.3s ease",
-    padding: "10px",
-    border: "2px solid transparent", // Reserve space for border to avoid jump
+    padding: "12px",
+    border: "2px solid transparent",
   },
   cardToday: {
     border: "2px solid var(--nav-text)",
@@ -306,7 +312,7 @@ export const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     textTransform: "uppercase",
     color: "var(--text-secondary)",
-    marginBottom: "4px",
+    marginBottom: "8px",
     letterSpacing: "0.5px",
     transition: "color 0.3s ease",
     minHeight: "20px",
@@ -315,13 +321,11 @@ export const styles: Record<string, React.CSSProperties> = {
     background: "transparent",
     border: "none",
     color: "var(--text-secondary)",
-    opacity: 0.4,
     cursor: "pointer",
-    padding: "2px",
+    padding: "4px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    transition: "opacity 0.2s ease, color 0.2s ease",
     borderRadius: "4px",
   },
   textarea: {
@@ -329,13 +333,15 @@ export const styles: Record<string, React.CSSProperties> = {
     border: "none",
     resize: "none",
     fontSize: "14px",
-    lineHeight: "1.4",
+    lineHeight: "1.5",
     color: "var(--text-primary)",
     fontFamily: "inherit",
     outline: "none",
     width: "100%",
     backgroundColor: "transparent",
     transition: "color 0.3s ease",
+    padding: 0,
+    margin: 0,
   },
 
   // --- Modal Styles (Settings) ---
@@ -357,9 +363,9 @@ export const styles: Record<string, React.CSSProperties> = {
     borderRadius: "16px",
     boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
     padding: "24px",
-    width: "500px", // Wider for tabs
+    width: "500px",
     maxWidth: "90%",
-    height: "500px",
+    height: "auto",
     maxHeight: "85vh",
     display: "flex",
     flexDirection: "column",
@@ -385,6 +391,7 @@ export const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     color: "var(--text-secondary)",
     padding: "4px",
+    borderRadius: "50%",
   },
   
   // Tabs
@@ -404,7 +411,6 @@ export const styles: Record<string, React.CSSProperties> = {
     color: "var(--text-secondary)",
     cursor: "pointer",
     borderRadius: "6px",
-    transition: "all 0.2s ease",
   },
   tabButtonActive: {
     backgroundColor: "var(--nav-bg)",
@@ -441,7 +447,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   themeButton: {
     flex: 1,
-    padding: "8px",
+    padding: "10px",
     borderRadius: "8px",
     border: "1px solid var(--nav-bg)",
     backgroundColor: "var(--bg-color)",
@@ -460,8 +466,8 @@ export const styles: Record<string, React.CSSProperties> = {
     justifyContent: "flex-start",
   },
   colorDotLarge: {
-    width: "24px",
-    height: "24px",
+    width: "28px",
+    height: "28px",
     borderRadius: "50%",
     cursor: "pointer",
     padding: 0,
@@ -483,7 +489,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   actionButton: {
     width: "100%",
-    padding: "10px",
+    padding: "10px 12px",
     borderRadius: "8px",
     border: "none",
     backgroundColor: "var(--nav-text)",
@@ -491,7 +497,6 @@ export const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: "13px",
     fontWeight: 500,
-    transition: "opacity 0.2s ease",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -499,7 +504,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   secondaryButton: {
     width: "100%",
-    padding: "10px",
+    padding: "10px 12px",
     borderRadius: "8px",
     border: "1px solid var(--nav-text)",
     backgroundColor: "transparent",
@@ -511,11 +516,10 @@ export const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     gap: "6px",
-    transition: "background-color 0.2s ease",
   },
   dangerButton: {
     width: "100%",
-    padding: "10px",
+    padding: "10px 12px",
     borderRadius: "8px",
     border: "1px solid #ef4444",
     backgroundColor: "transparent",
@@ -528,7 +532,6 @@ export const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     gap: "8px",
     marginTop: "8px",
-    transition: "background-color 0.2s ease",
   },
   
   // Docs & About
@@ -593,7 +596,6 @@ export const styles: Record<string, React.CSSProperties> = {
     background: "var(--bg-color)",
     color: "var(--text-primary)",
     cursor: "pointer",
-    transition: "transform 0.1s ease",
   },
   fontSizeDisplay: {
     fontSize: "13px",
