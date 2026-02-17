@@ -7,5 +7,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    sourcemap: false, // Saves space by not generating debug maps
+    minify: 'esbuild', // Ensures code is minified
   }
 });
