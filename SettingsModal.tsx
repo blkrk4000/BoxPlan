@@ -6,11 +6,11 @@ import { ViewMode } from "./types";
 interface SettingsModalProps {
   onClose: () => void;
   handleClear: () => void;
-  onApplyTemplate: (mode: ViewMode, template: string) => void;
+  onApplyTemplate: (mode: ViewMode, template: string, method: "append" | "replace") => void;
   onDataChange: () => void; // Triggered after import
 }
 
-type Tab = "templates" | "data" | "docs" | "about";
+type Tab = "data" | "templates" | "docs" | "about";
 
 export const SettingsModal = ({
   onClose,
@@ -18,7 +18,8 @@ export const SettingsModal = ({
   onApplyTemplate,
   onDataChange
 }: SettingsModalProps) => {
-  const [activeTab, setActiveTab] = useState<Tab>("templates");
+  // Default to "data" as requested
+  const [activeTab, setActiveTab] = useState<Tab>("data");
   
   // Templates State
   const [weekTemplate, setWeekTemplate] = useState("");
@@ -51,6 +52,19 @@ export const SettingsModal = ({
     const val = e.target.value;
     setYearTemplate(val);
     localStorage.setItem("boxplan_template_year", val);
+  };
+
+  const handleTemplateAction = (mode: ViewMode, template: string, method: "append" | "replace") => {
+    if (!template) return;
+    
+    if (method === "replace") {
+      if (!window.confirm("Achtung: Dies ersetzt alle Einträge der aktuellen Ansicht durch das Template. Fortfahren?")) {
+        return;
+      }
+    }
+    
+    onApplyTemplate(mode, template, method);
+    onClose();
   };
 
   const handleExport = () => {
@@ -113,21 +127,21 @@ export const SettingsModal = ({
           </button>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Reordered: Data first */}
         <div style={styles.tabContainer}>
-          <button 
-            style={{...styles.tabButton, ...(activeTab === "templates" ? styles.tabButtonActive : {})}}
-            className={`tab-btn ${activeTab === "templates" ? 'active' : ''}`}
-            onClick={() => setActiveTab("templates")}
-          >
-            Templates
-          </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "data" ? styles.tabButtonActive : {})}}
             className={`tab-btn ${activeTab === "data" ? 'active' : ''}`}
             onClick={() => setActiveTab("data")}
           >
             Daten
+          </button>
+          <button 
+            style={{...styles.tabButton, ...(activeTab === "templates" ? styles.tabButtonActive : {})}}
+            className={`tab-btn ${activeTab === "templates" ? 'active' : ''}`}
+            onClick={() => setActiveTab("templates")}
+          >
+            Templates
           </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "docs" ? styles.tabButtonActive : {})}}
@@ -146,56 +160,8 @@ export const SettingsModal = ({
         </div>
 
         <div style={styles.tabContent}>
-          {/* TAB: Templates */}
-          {activeTab === "templates" && (
-            <>
-              <div style={styles.settingsSection}>
-                <span style={styles.settingsLabel}>Wochen-Template</span>
-                <textarea
-                  style={styles.templateInput}
-                  value={weekTemplate}
-                  onChange={saveWeekTemplate}
-                  placeholder="Standard-Inhalt für neue Wochen..."
-                  spellCheck={false}
-                  className="input-focus"
-                />
-                <button 
-                  style={styles.secondaryButton}
-                  className="btn-secondary"
-                  onClick={() => {
-                    onApplyTemplate("week", weekTemplate);
-                    onClose();
-                  }}
-                >
-                  Auf aktuelle Woche anwenden
-                </button>
-              </div>
-
-              <div style={styles.settingsSection}>
-                <span style={styles.settingsLabel}>Jahres-Template</span>
-                <textarea
-                  style={styles.templateInput}
-                  value={yearTemplate}
-                  onChange={saveYearTemplate}
-                  placeholder="Standard-Inhalt für Monate..."
-                  spellCheck={false}
-                  className="input-focus"
-                />
-                <button 
-                  style={styles.secondaryButton}
-                  className="btn-secondary"
-                  onClick={() => {
-                    onApplyTemplate("year", yearTemplate);
-                    onClose();
-                  }}
-                >
-                  Auf aktuelles Jahr anwenden
-                </button>
-              </div>
-            </>
-          )}
-
-          {/* TAB: Data */}
+          
+          {/* TAB: Data (Now First) */}
           {activeTab === "data" && (
             <>
                <div style={styles.settingsSection}>
@@ -228,8 +194,69 @@ export const SettingsModal = ({
                   Löscht alle Einträge der aktuell angezeigten Ansicht (Jahr oder Woche).
                 </p>
                 <button style={styles.dangerButton} className="btn-danger" onClick={handleClear}>
-                  <TrashIcon /> Ansicht leeren
+                  <TrashIcon /> Reset Planung
                 </button>
+              </div>
+            </>
+          )}
+
+          {/* TAB: Templates (Now Second) */}
+          {activeTab === "templates" && (
+            <>
+              <div style={styles.settingsSection}>
+                <span style={styles.settingsLabel}>Wochen-Template</span>
+                <textarea
+                  style={styles.templateInput}
+                  value={weekTemplate}
+                  onChange={saveWeekTemplate}
+                  placeholder="Standard-Inhalt für neue Wochen..."
+                  spellCheck={false}
+                  className="input-focus"
+                />
+                <div style={styles.settingsButtonRow}>
+                  <button 
+                    style={styles.secondaryButton}
+                    className="btn-secondary"
+                    onClick={() => handleTemplateAction("week", weekTemplate, "append")}
+                  >
+                    Anfügen
+                  </button>
+                  <button 
+                    style={styles.secondaryButton}
+                    className="btn-secondary"
+                    onClick={() => handleTemplateAction("week", weekTemplate, "replace")}
+                  >
+                    Ersetzen
+                  </button>
+                </div>
+              </div>
+
+              <div style={styles.settingsSection}>
+                <span style={styles.settingsLabel}>Jahres-Template</span>
+                <textarea
+                  style={styles.templateInput}
+                  value={yearTemplate}
+                  onChange={saveYearTemplate}
+                  placeholder="Standard-Inhalt für Monate..."
+                  spellCheck={false}
+                  className="input-focus"
+                />
+                <div style={styles.settingsButtonRow}>
+                  <button 
+                    style={styles.secondaryButton}
+                    className="btn-secondary"
+                    onClick={() => handleTemplateAction("year", yearTemplate, "append")}
+                  >
+                    Anfügen
+                  </button>
+                  <button 
+                    style={styles.secondaryButton}
+                    className="btn-secondary"
+                    onClick={() => handleTemplateAction("year", yearTemplate, "replace")}
+                  >
+                    Ersetzen
+                  </button>
+                </div>
               </div>
             </>
           )}
@@ -268,7 +295,10 @@ export const SettingsModal = ({
               <span style={styles.settingsLabel}>Funktionen</span>
               <p style={{fontSize: '13px', lineHeight: '1.5', color: 'var(--text-primary)'}}>
                 <b>Templates:</b> Erstelle Vorlagen für deine Wochen- oder Jahresplanung. 
-                Mit "Anwenden" wird die Vorlage zum existierenden Text der aktuellen Ansicht hinzugefügt.
+                <br/>
+                <i>Anfügen:</i> Fügt den Text unter bestehende Notizen hinzu.
+                <br/>
+                <i>Ersetzen:</i> Löscht bestehende Notizen und setzt das Template ein.
               </p>
               <p style={{fontSize: '13px', lineHeight: '1.5', color: 'var(--text-primary)'}}>
                 <b>Suche:</b> Die Suche durchsucht alle lokal gespeicherten Daten.

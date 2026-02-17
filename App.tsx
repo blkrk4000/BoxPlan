@@ -159,27 +159,39 @@ export const App = () => {
     }
   };
 
-  const handleApplyTemplate = (mode: ViewMode, template: string) => {
+  const handleApplyTemplate = (mode: ViewMode, template: string, method: "append" | "replace") => {
     if (!template) return;
 
     if (mode === "week") {
       for (let i = 0; i < WEEKDAYS.length; i++) {
         const id = `mp_w_${isoYear}_${week}_${i}`;
         const current = localStorage.getItem(id);
-        if (!current) {
+        
+        if (method === "replace") {
           localStorage.setItem(id, template);
         } else {
-          localStorage.setItem(id, current + "\n" + template);
+          // Append mode
+          if (!current) {
+            localStorage.setItem(id, template);
+          } else {
+            localStorage.setItem(id, current + "\n" + template);
+          }
         }
       }
     } else {
       for (let i = 0; i < MONTHS.length; i++) {
         const id = `mp_y_${year}_${i}`;
         const current = localStorage.getItem(id);
-        if (!current) {
+        
+        if (method === "replace") {
           localStorage.setItem(id, template);
         } else {
-          localStorage.setItem(id, current + "\n" + template);
+           // Append mode
+          if (!current) {
+            localStorage.setItem(id, template);
+          } else {
+            localStorage.setItem(id, current + "\n" + template);
+          }
         }
       }
     }
