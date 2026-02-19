@@ -3,11 +3,14 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Crucial for Electron to load assets correctly
+  server: {
+    port: 5202,
+    strictPort: true,
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: false, // Saves space by not generating debug maps
-    minify: 'esbuild', // Ensures code is minified
+    sourcemap: false,
+    minify: 'esbuild',
   }
 });

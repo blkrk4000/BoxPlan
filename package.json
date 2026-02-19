@@ -1,50 +1,11 @@
 {
   "name": "boxplan-app",
   "version": "0.2.0",
-  "description": "BoxPlan App for Macbook Air",
-  "main": "main.js",
+  "description": "BoxPlan App",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/fix-icon.js",
     "build": "tsc && vite build",
-    "start": "npm run build && electron .",
-    "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run prebuild && npm run build && electron-builder"
-  },
-  "build": {
-    "appId": "com.boxplan.app",
-    "productName": "BoxPlan",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "main.js",
-      "preload.js",
-      "package.json",
-      "build/icon.png",
-      "!**/node_modules/*"
-    ],
-    "mac": {
-      "category": "public.app-category.productivity",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "build/icon.png"
-    }
+    "preview": "vite preview"
   },
   "author": "github.com/blkrk4000",
   "license": "MIT",
@@ -52,8 +13,6 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
-    "electron": "^28.0.0",
-    "electron-builder": "^24.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.0",

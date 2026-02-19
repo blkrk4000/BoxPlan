@@ -18,11 +18,8 @@ export const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
     gap: "16px",
     height: "60px",
-    paddingTop: "0", 
-    paddingLeft: "80px", // Keep space for traffic lights
-    // ELECTRON SPECIFIC: Allow dragging the window via the header
-    // @ts-ignore
-    WebkitAppRegion: "drag",
+    paddingTop: "12px", // Added a little top padding for aesthetics
+    paddingLeft: "0px", // Removed traffic light space
     position: "relative", // For popovers
   },
   headerLeft: {
@@ -79,8 +76,6 @@ export const styles: Record<string, React.CSSProperties> = {
     borderRadius: "16px", 
     padding: "2px",
     gap: "2px",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag", 
   },
   navButton: {
     border: "none",
@@ -102,8 +97,6 @@ export const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag", 
   },
   dateLabel: {
     fontSize: "13px",
@@ -124,8 +117,6 @@ export const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "6px",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag", 
   },
   // --- Header Buttons ---
   todayButton: {
@@ -142,8 +133,6 @@ export const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     gap: "6px",
     whiteSpace: "nowrap",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag",
   },
   iconButton: {
     background: "transparent",
@@ -156,8 +145,6 @@ export const styles: Record<string, React.CSSProperties> = {
     padding: "8px",
     borderRadius: "50%",
     position: "relative",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag",
   },
   settingsButton: {
     background: "transparent",
@@ -169,8 +156,6 @@ export const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     padding: "8px",
     borderRadius: "50%",
-    // @ts-ignore
-    WebkitAppRegion: "no-drag",
   },
   
   // --- Theme Popover ---

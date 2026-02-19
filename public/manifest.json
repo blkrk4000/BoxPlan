@@ -1,0 +1,16 @@
+{
+  "name": "BoxPlan",
+  "short_name": "BoxPlan",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#f5f5f7",
+  "description": "Minimalistischer Planer für macOS",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
