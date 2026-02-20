@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve -s dist -l 3002",
+    "prod": "npm run build && npm run serve",
+    "dev-pm2": "pm2 start npm --name \"boxplan\" --watch --ignore-watch=\"dist node_modules\" -- run prod",
+    "stop-pm2": "pm2 delete boxplan"
   },
   "author": "github.com/blkrk4000",
   "license": "MIT",
@@ -16,7 +20,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "serve": "^14.2.0"
   },
   "dependencies": {}
 }
