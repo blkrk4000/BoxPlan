@@ -1,6 +1,6 @@
 {
   "name": "boxplan-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "BoxPlan App",
   "scripts": {
     "dev": "vite",
@@ -8,8 +8,9 @@
     "preview": "vite preview",
     "serve": "serve -s dist -l 3002",
     "prod": "npm run build && npm run serve",
-    "dev-pm2": "pm2 start npm --name \"boxplan\" --watch --ignore-watch=\"dist node_modules\" -- run prod",
-    "stop-pm2": "pm2 delete boxplan"
+    "prod-pm2": "pm2 start npm --name \"boxplan\" -- run prod",
+    "dev-pm2": "pm2 start npm --name \"boxplan-dev\" -- run dev",
+    "stop-pm2": "pm2 delete boxplan boxplan-dev"
   },
   "author": "github.com/blkrk4000",
   "license": "MIT",
