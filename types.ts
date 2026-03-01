@@ -1,7 +1,3 @@
-/// <reference types="vite/client" />
-
-declare const __APP_VERSION__: string;
-
 export type ViewMode = "week" | "year";
 export type ThemeMode = "light" | "dark";
 export type ThemeName = "classic" | "ocean" | "eink" | "gruvbox";
