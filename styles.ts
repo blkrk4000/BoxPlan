@@ -79,7 +79,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   navButton: {
     border: "none",
-    background: "transparent",
+    backgroundColor: "transparent",
     padding: "4px 12px", // Increased vertical padding slightly
     borderRadius: "14px",
     fontSize: "12px",
@@ -108,7 +108,7 @@ export const styles: Record<string, React.CSSProperties> = {
     whiteSpace: "nowrap",
   },
   navArrow: {
-    background: "none",
+    backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
     color: "var(--text-secondary)",
@@ -120,7 +120,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   // --- Header Buttons ---
   todayButton: {
-    background: "var(--nav-bg)",
+    backgroundColor: "var(--nav-bg)",
     border: "none",
     cursor: "pointer",
     color: "var(--nav-text)",
@@ -135,7 +135,7 @@ export const styles: Record<string, React.CSSProperties> = {
     whiteSpace: "nowrap",
   },
   iconButton: {
-    background: "transparent",
+    backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
     color: "var(--text-secondary)",
@@ -147,7 +147,7 @@ export const styles: Record<string, React.CSSProperties> = {
     position: "relative",
   },
   settingsButton: {
-    background: "transparent",
+    backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
     color: "var(--text-secondary)",
@@ -303,7 +303,7 @@ export const styles: Record<string, React.CSSProperties> = {
     minHeight: "20px",
   },
   cardClearBtn: {
-    background: "transparent",
+    backgroundColor: "transparent",
     border: "none",
     color: "var(--text-secondary)",
     cursor: "pointer",
@@ -371,7 +371,7 @@ export const styles: Record<string, React.CSSProperties> = {
     color: "var(--text-primary)",
   },
   modalCloseBtn: {
-    background: "none",
+    backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
     color: "var(--text-secondary)",
@@ -388,7 +388,7 @@ export const styles: Record<string, React.CSSProperties> = {
     paddingBottom: "8px",
   },
   tabButton: {
-    background: "transparent",
+    backgroundColor: "transparent",
     border: "none",
     padding: "6px 12px",
     fontSize: "13px",
@@ -578,7 +578,7 @@ export const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     borderRadius: "6px",
     border: "1px solid var(--nav-bg)",
-    background: "var(--bg-color)",
+    backgroundColor: "var(--bg-color)",
     color: "var(--text-primary)",
     cursor: "pointer",
   },

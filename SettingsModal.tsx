@@ -310,7 +310,7 @@ export const SettingsModal = ({
           {activeTab === "about" && (
             <div style={styles.aboutContainer}>
               <h3 style={{color: 'var(--text-primary)', marginBottom: '0px'}}>BoxPlan</h3>
-              <p style={{marginTop: '0px', fontSize: '12px', color: 'var(--text-secondary)'}}>v0.2.0</p>
+              <p style={{marginTop: '0px', fontSize: '12px', color: 'var(--text-secondary)'}}>v{__APP_VERSION__}</p>
               
               <div style={{marginTop: '10px', fontSize: '13px', lineHeight: '1.6'}}>
                 Minimalistischer Planer für macOS.<br />
