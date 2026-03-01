@@ -1,6 +1,6 @@
 export type ViewMode = "week" | "year";
 export type ThemeMode = "light" | "dark";
-export type ThemeName = "classic" | "ocean" | "forest" | "sunset";
+export type ThemeName = "classic" | "ocean" | "eink" | "gruvbox";
 
 export const MONTHS = [
   "Januar", "Februar", "März", "April",
@@ -13,7 +13,14 @@ export const WEEKDAYS = [
   "Freitag", "Samstag", "Sonntag", "Notizen"
 ];
 
-export const THEMES: Record<string, any> = {
+export interface ThemeConfig {
+  name: string;
+  previewColor: string;
+  light: Record<string, string>;
+  dark: Record<string, string>;
+}
+
+export const THEMES: Record<string, ThemeConfig> = {
   classic: {
     name: "Classic",
     previewColor: "#8e8e93",
@@ -66,55 +73,55 @@ export const THEMES: Record<string, any> = {
       "--nav-active-shadow": "0 2px 4px rgba(0,0,0,0.3)",
     },
   },
-  forest: {
-    name: "Forest",
-    previewColor: "#10b981",
+  eink: {
+    name: "E-Ink",
+    previewColor: "#4a4a4a",
     light: {
-      "--bg-color": "#f2fcf5",
-      "--card-bg": "#ffffff",
-      "--text-primary": "#064e3b",
-      "--text-secondary": "#059669",
-      "--nav-bg": "#d1fae5",
-      "--nav-text": "#059669",
+      "--bg-color": "#a9a9a9",
+      "--card-bg": "#d3d3d3",
+      "--text-primary": "#000000",
+      "--text-secondary": "#444444",
+      "--nav-bg": "#888888",
+      "--nav-text": "#000000",
       "--nav-active-bg": "#ffffff",
-      "--nav-active-text": "#064e3b",
-      "--nav-active-shadow": "0 2px 4px rgba(16, 185, 129, 0.15)",
+      "--nav-active-text": "#000000",
+      "--nav-active-shadow": "0 2px 4px rgba(0,0,0,0.1)",
     },
     dark: {
-      "--bg-color": "#064e3b",
-      "--card-bg": "#065f46",
-      "--text-primary": "#ecfdf5",
-      "--text-secondary": "#a7f3d0",
-      "--nav-bg": "#047857",
-      "--nav-text": "#6ee7b7",
-      "--nav-active-bg": "#10b981",
+      "--bg-color": "#2b2b2b",
+      "--card-bg": "#404040",
+      "--text-primary": "#dcdcdc",
+      "--text-secondary": "#a0a0a0",
+      "--nav-bg": "#505050",
+      "--nav-text": "#dcdcdc",
+      "--nav-active-bg": "#666666",
       "--nav-active-text": "#ffffff",
-      "--nav-active-shadow": "0 2px 4px rgba(0,0,0,0.3)",
+      "--nav-active-shadow": "0 2px 4px rgba(0,0,0,0.2)",
     },
   },
-  sunset: {
-    name: "Sunset",
-    previewColor: "#f97316",
+  gruvbox: {
+    name: "Gruvbox",
+    previewColor: "#d79921",
     light: {
-      "--bg-color": "#fff7ed",
-      "--card-bg": "#ffffff",
-      "--text-primary": "#7c2d12",
-      "--text-secondary": "#ea580c",
-      "--nav-bg": "#ffedd5",
-      "--nav-text": "#c2410c",
-      "--nav-active-bg": "#ffffff",
-      "--nav-active-text": "#7c2d12",
-      "--nav-active-shadow": "0 2px 4px rgba(249, 115, 22, 0.15)",
+      "--bg-color": "#fbf1c7",
+      "--card-bg": "#ebdbb2",
+      "--text-primary": "#3c3836",
+      "--text-secondary": "#7c6f64",
+      "--nav-bg": "#d5c4a1",
+      "--nav-text": "#3c3836",
+      "--nav-active-bg": "#f9f5d7",
+      "--nav-active-text": "#282828",
+      "--nav-active-shadow": "0 2px 4px rgba(60, 56, 54, 0.15)",
     },
     dark: {
-      "--bg-color": "#431407",
-      "--card-bg": "#7c2d12",
-      "--text-primary": "#fff7ed",
-      "--text-secondary": "#fdba74",
-      "--nav-bg": "#9a3412",
-      "--nav-text": "#ffedd5",
-      "--nav-active-bg": "#c2410c",
-      "--nav-active-text": "#ffffff",
+      "--bg-color": "#282828",
+      "--card-bg": "#3c3836",
+      "--text-primary": "#ebdbb2",
+      "--text-secondary": "#a89984",
+      "--nav-bg": "#504945",
+      "--nav-text": "#d5c4a1",
+      "--nav-active-bg": "#1d2021",
+      "--nav-active-text": "#ebdbb2",
       "--nav-active-shadow": "0 2px 4px rgba(0,0,0,0.3)",
     },
   }

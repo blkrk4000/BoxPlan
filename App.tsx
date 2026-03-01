@@ -30,7 +30,36 @@ export const App = () => {
   
   const dateLabel = view === "week" ? `KW ${week} • ${isoYear}` : `${year}`;
 
-  // Real "Today" Calculation
+  // Sanitize theme name to ensure it matches a key in THEMES
+  const safeThemeName = useMemo(() => {
+    const normalized = themeName.toLowerCase().trim();
+    return (normalized in THEMES) ? (normalized as ThemeName) : "classic";
+  }, [themeName]);
+
+  // Apply theme variables
+  useEffect(() => {
+    const themeConfig = THEMES[safeThemeName][themeMode];
+    const root = document.documentElement;
+    
+    // Debug log
+    console.log(`Applying Theme: ${safeThemeName} (${themeMode})`, themeConfig);
+
+    // Set color-scheme for browser UI
+    root.style.setProperty("color-scheme", themeMode);
+
+    if (themeConfig) {
+      Object.entries(themeConfig).forEach(([key, value]) => {
+        root.style.setProperty(key, value as string);
+      });
+      
+      // Force body background to ensure update
+      document.body.style.backgroundColor = themeConfig["--bg-color"];
+      document.body.style.color = themeConfig["--text-primary"];
+    }
+
+    localStorage.setItem("masterplan_theme_mode", themeMode);
+    localStorage.setItem("masterplan_theme_name", safeThemeName);
+  }, [themeMode, safeThemeName]);
   const today = new Date();
   const { week: currentRealWeek, year: currentRealYear } = useMemo(() => getISOWeekAndYear(today), []);
   const currentRealMonth = today.getMonth();
@@ -99,26 +128,14 @@ export const App = () => {
     const savedFontSize = localStorage.getItem("masterplan_fontsize");
     
     if (savedMode) setThemeMode(savedMode);
-    if (savedName && (savedName in THEMES)) {
+    if (savedName) {
+      // We don't check 'in THEMES' here, the safeThemeName memo handles validation
       setThemeName(savedName as ThemeName);
     }
     if (savedFontSize) {
       setFontSize(parseInt(savedFontSize, 10));
     }
   }, []);
-
-  // Apply theme variables
-  useEffect(() => {
-    const themeConfig = THEMES[themeName][themeMode];
-    const root = document.documentElement;
-    
-    Object.entries(themeConfig).forEach(([key, value]) => {
-      root.style.setProperty(key, value as string);
-    });
-
-    localStorage.setItem("masterplan_theme_mode", themeMode);
-    localStorage.setItem("masterplan_theme_name", themeName);
-  }, [themeMode, themeName]);
 
   const toggleMode = () => {
     setThemeMode((prev) => (prev === "light" ? "dark" : "light"));
