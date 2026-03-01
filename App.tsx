@@ -277,11 +277,21 @@ export const App = () => {
                 isoYear === currentRealYear && 
                 index === currentRealDayIndex;
 
+              // Calculate date string for this day (if not Notes)
+              let displayTitle = day;
+              if (index < 7) {
+                const monday = getDateFromISOWeek(week, isoYear);
+                const dayDate = new Date(monday);
+                dayDate.setDate(monday.getDate() + index);
+                const dateStr = dayDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+                displayTitle = `${day}, ${dateStr}`;
+              }
+
               return (
                 <CanvasCard
                   key={id}
                   id={id}
-                  title={day}
+                  title={displayTitle}
                   placeholder="" 
                   prevId={prevId}
                   nextId={nextId}
