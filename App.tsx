@@ -41,9 +41,6 @@ export const App = () => {
     const themeConfig = THEMES[safeThemeName][themeMode];
     const root = document.documentElement;
     
-    // Debug log
-    console.log(`Applying Theme: ${safeThemeName} (${themeMode})`, themeConfig);
-
     // Set color-scheme for browser UI
     root.style.setProperty("color-scheme", themeMode);
 
