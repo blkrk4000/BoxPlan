@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# BoxPlan
 
-# Run and deploy your AI Studio app
+Ein einfacher Wochenplaner. Einfach in die Tagesboxen tippen, fertig.
 
-This contains everything you need to run your app locally.
+**Live:** https://blkrk4000.github.io/BoxPlan/
 
-View your app in AI Studio: https://ai.studio/apps/97fd2de2-3611-45df-be78-2b5cb9026311
+## Funktionen
 
-## Run Locally
+- **Wochenansicht:** eine Box pro Wochentag, die heutige ist hervorgehoben und fokussiert
+- **Jahresansicht:** eine Box pro Monat
+- **Tab / Shift+Tab** springt zur nächsten bzw. vorherigen Box, `Cmd/Ctrl+1` wechselt zwischen Woche und Jahr
+- **Suche** über alle Einträge
+- **Vorlagen** für Woche und Jahr (anhängen oder ersetzen)
+- **Backup:** Export und Import als JSON
+- Hell/Dunkel, mehrere Farbschemata, einstellbare Schriftgröße
 
-**Prerequisites:**  Node.js
+## Datenspeicherung
 
+Alle Einträge liegen ausschließlich im `localStorage` deines Browsers. Es gibt keinen Server und kein Konto, es werden keine Daten übertragen.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- Die Daten gelten pro Browser, Gerät und Adresse. `localhost` und die GitHub-Pages-Adresse haben getrennte Daten.
+- Löschst du die Browserdaten, sind die Einträge weg. Mach deshalb regelmäßig einen Export (Einstellungen → Daten).
+
+## Lokal starten
+
+Voraussetzung: Node.js
+
+```
+npm install
+npm run dev
+```
+
+Die App läuft dann auf http://localhost:3000. Ein API-Key wird nicht benötigt.
+
+## Deployment
+
+Jeder Push auf `main` baut die App und veröffentlicht sie per GitHub Actions auf GitHub Pages (`.github/workflows/deploy.yml`).
+
+## Lizenz
+
+MIT
