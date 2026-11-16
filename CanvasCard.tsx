@@ -1,6 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { styles } from "./styles";
 import { TrashIcon } from "./Icons";
+
+const URL_REGEX = /https?:\/\/[^\s<>]+/g;
+
+// Trailing punctuation is usually not part of the URL
+const cleanUrl = (url: string) => url.replace(/[.,;:!?)\]]+$/, "");
+
+// Find the URL at a given cursor position (or null)
+const urlAtPosition = (text: string, pos: number): string | null => {
+  for (const m of text.matchAll(URL_REGEX)) {
+    const url = cleanUrl(m[0]);
+    const start = m.index ?? 0;
+    if (pos >= start && pos <= start + url.length) return url;
+  }
+  return null;
+};
+
+// Render text with coloured URLs (shown behind the transparent textarea)
+const renderWithUrls = (text: string) => {
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  for (const m of text.matchAll(URL_REGEX)) {
+    const url = cleanUrl(m[0]);
+    const start = m.index ?? 0;
+    if (start > last) parts.push(text.slice(last, start));
+    parts.push(<span key={start} className="bp-url">{url}</span>);
+    last = start + url.length;
+  }
+  parts.push(text.slice(last));
+  return parts;
+};
 
 /**
  * A single "Canvas" component.
@@ -25,6 +55,19 @@ export const CanvasCard = ({
   fontSize?: number;
 }) => {
   const [content, setContent] = useState("");
+  const backdropRef = useRef<HTMLDivElement>(null);
+
+  // Keep the coloured layer aligned with the textarea when scrolling
+  const syncScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+    if (backdropRef.current) backdropRef.current.scrollTop = e.currentTarget.scrollTop;
+  };
+
+  // Cmd/Ctrl + click on a URL opens it in a new tab
+  const handleClick = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+    if (!(e.metaKey || e.ctrlKey)) return;
+    const url = urlAtPosition(content, e.currentTarget.selectionStart);
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   // Load content whenever ID changes (e.g. week change)
   useEffect(() => {
@@ -102,15 +145,28 @@ export const CanvasCard = ({
           <TrashIcon />
         </button>
       </div>
-      <textarea
-        id={id}
-        style={{...styles.textarea, fontSize: `${fontSize}px`}}
-        value={content}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder || ""}
-        spellCheck={false}
-      />
+      <div style={styles.textareaWrap}>
+        <div
+          ref={backdropRef}
+          style={{...styles.textareaBackdrop, fontSize: `${fontSize}px`}}
+          aria-hidden="true"
+        >
+          {renderWithUrls(content)}
+          {"\n"}
+        </div>
+        <textarea
+          id={id}
+          style={{...styles.textarea, fontSize: `${fontSize}px`}}
+          value={content}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onScroll={syncScroll}
+          onClick={handleClick}
+          placeholder={placeholder || ""}
+          spellCheck={false}
+          title="URLs öffnen: Cmd + Klick"
+        />
+      </div>
     </div>
   );
 };
