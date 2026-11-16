@@ -257,7 +257,7 @@ export const App = () => {
       {/* Main Content Area */}
       <main style={styles.main}>
         {view === "week" ? (
-          <div style={styles.gridWeek} key={`week-${isoYear}-${week}-${resetCount}`}>
+          <div className="grid grid-week" key={`week-${isoYear}-${week}-${resetCount}`}>
             {WEEKDAYS.map((day, index) => {
               // Dynamic ID: mp_w_YYYY_WW_Index
               const id = `mp_w_${isoYear}_${week}_${index}`;
@@ -300,7 +300,7 @@ export const App = () => {
             })}
           </div>
         ) : (
-          <div style={styles.gridYear} key={`year-${year}-${resetCount}`}>
+          <div className="grid grid-year" key={`year-${year}-${resetCount}`}>
             {MONTHS.map((month, index) => {
               // Dynamic ID: mp_y_YYYY_Index
               const id = `mp_y_${year}_${index}`;

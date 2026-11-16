@@ -16,8 +16,9 @@ export const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     marginBottom: "12px",
     flexShrink: 0,
-    gap: "16px",
-    height: "60px",
+    gap: "8px 16px",
+    flexWrap: "wrap",
+    minHeight: "60px",
     paddingTop: "12px", // Added a little top padding for aesthetics
     paddingLeft: "0px", // Removed traffic light space
     position: "relative", // For popovers
@@ -259,20 +260,6 @@ export const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     overflowY: "auto",
     minHeight: 0,
-  },
-  gridWeek: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gridTemplateRows: "repeat(2, 1fr)",
-    gap: "8px",
-    height: "100%",
-  },
-  gridYear: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gridTemplateRows: "repeat(3, 1fr)",
-    gap: "8px",
-    height: "100%",
   },
   card: {
     backgroundColor: "var(--card-bg)",
