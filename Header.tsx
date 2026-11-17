@@ -70,7 +70,7 @@ export const Header = ({
             }}
             className={`nav-btn ${view === "week" ? 'active' : ''}`}
           >
-            Wochenplanung
+            Woche
           </button>
           <button
             onClick={() => setView("year")}
@@ -80,7 +80,7 @@ export const Header = ({
             }}
             className={`nav-btn ${view === "year" ? 'active' : ''}`}
           >
-            Jahresübersicht
+            Jahr
           </button>
         </div>
         
