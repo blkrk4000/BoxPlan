@@ -49,7 +49,7 @@ export const Header = ({
   return (
     <header style={styles.header}>
       {/* Left: Logo & Title - Packed tightly */}
-      <div style={styles.headerLeft}>
+      <div style={styles.headerLeft} className="hdr-left">
         <div style={styles.logoContainer}>
           <div style={styles.logoIcon}>
             <BoxIcon />
@@ -59,17 +59,8 @@ export const Header = ({
         <span style={styles.versionBadge}>v{__APP_VERSION__}</span>
       </div>
 
-      {/* Center: Search, NavPill, DateNav */}
-      <div style={styles.headerCenter}>
-        <button 
-          onClick={onOpenSearch}
-          style={styles.iconButton}
-          className="icon-btn"
-          title="Suchen"
-        >
-          <SearchIcon />
-        </button>
-
+      {/* Center: NavPill, DateNav */}
+      <div style={styles.headerCenter} className="hdr-center">
         <div style={styles.navPill}>
           <button
             onClick={() => setView("week")}
@@ -124,7 +115,15 @@ export const Header = ({
       </div>
 
       {/* Right: Theme & Settings */}
-      <div style={styles.headerRight}>
+      <div style={styles.headerRight} className="hdr-right">
+        <button 
+          onClick={onOpenSearch}
+          style={styles.iconButton}
+          className="icon-btn"
+          title="Suchen"
+        >
+          <SearchIcon />
+        </button>
         <div style={{position: 'relative'}}>
           <button 
             onClick={() => setIsThemeOpen(!isThemeOpen)} 

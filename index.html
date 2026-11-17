@@ -200,6 +200,13 @@
         .grid { grid-template-columns: 1fr; }
       }
 
+      /* Schmales Fenster: Logo + Icons in einer Zeile, Navigation darunter */
+      @media (max-width: 1000px) {
+        .hdr-left { order: 1; }
+        .hdr-right { order: 2; }
+        .hdr-center { order: 3; flex-basis: 100%; }
+      }
+
     </style>
 </head>
   <body>

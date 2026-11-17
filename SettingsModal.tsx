@@ -323,7 +323,7 @@ export const SettingsModal = ({
               </div>
               
               <div style={{fontSize: '11px', color: 'var(--text-secondary)', opacity: 0.8}}>
-                Realisiert mit Unterstützung von Google Gemini AI.
+                Realisiert mit Unterstützung von Google Gemini AI und Claude (Anthropic).
               </div>
             </div>
           )}
