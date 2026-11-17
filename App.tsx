@@ -217,6 +217,36 @@ export const App = () => {
     setResetCount(prev => prev + 1);
   };
 
+  // --- Wochenvorlage: alle 8 Boxen der Woche als Ganzes speichern / in leere Boxen einsetzen ---
+  const WEEK_TEMPLATE_KEY = "boxplan_template_week_days";
+
+  const handleSaveWeekTemplate = () => {
+    const days = WEEKDAYS.map((_, i) => localStorage.getItem(`mp_w_${isoYear}_${week}_${i}`) || "");
+    localStorage.setItem(WEEK_TEMPLATE_KEY, JSON.stringify(days));
+  };
+
+  const handleApplyWeekTemplate = (): number => {
+    const raw = localStorage.getItem(WEEK_TEMPLATE_KEY);
+    if (!raw) return -1;
+    let days: string[];
+    try {
+      days = JSON.parse(raw);
+    } catch {
+      return -1;
+    }
+    let filled = 0;
+    WEEKDAYS.forEach((_, i) => {
+      const id = `mp_w_${isoYear}_${week}_${i}`;
+      const tpl = days[i];
+      if (tpl && !(localStorage.getItem(id) || "").trim()) {
+        localStorage.setItem(id, tpl);
+        filled++;
+      }
+    });
+    setResetCount(prev => prev + 1);
+    return filled;
+  };
+
   const handleClear = () => {
     let confirmMsg = "";
     if (view === "week") {
@@ -353,6 +383,9 @@ export const App = () => {
           onClose={() => setShowSettings(false)}
           handleClear={handleClear}
           onApplyTemplate={handleApplyTemplate}
+          view={view}
+          onSaveWeekTemplate={handleSaveWeekTemplate}
+          onApplyWeekTemplate={handleApplyWeekTemplate}
           onDataChange={() => setResetCount(prev => prev + 1)}
         />
       )}

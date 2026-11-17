@@ -7,6 +7,9 @@ interface SettingsModalProps {
   onClose: () => void;
   handleClear: () => void;
   onApplyTemplate: (mode: ViewMode, template: string, method: "append" | "replace") => void;
+  view: ViewMode;
+  onSaveWeekTemplate: () => void;
+  onApplyWeekTemplate: () => number; // returns number of boxes filled (-1 = no template saved)
   onDataChange: () => void; // Triggered after import
 }
 
@@ -16,20 +19,22 @@ export const SettingsModal = ({
   onClose,
   handleClear,
   onApplyTemplate,
+  view,
+  onSaveWeekTemplate,
+  onApplyWeekTemplate,
   onDataChange
 }: SettingsModalProps) => {
   // Default to "data" as requested
   const [activeTab, setActiveTab] = useState<Tab>("data");
   
   // Templates State
-  const [weekTemplate, setWeekTemplate] = useState("");
   const [yearTemplate, setYearTemplate] = useState("");
+  const [weekTemplateInfo, setWeekTemplateInfo] = useState("");
   
   // File Input Ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setWeekTemplate(localStorage.getItem("boxplan_template_week") || "");
     setYearTemplate(localStorage.getItem("boxplan_template_year") || "");
   }, []);
 
@@ -42,10 +47,23 @@ export const SettingsModal = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const saveWeekTemplate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    setWeekTemplate(val);
-    localStorage.setItem("boxplan_template_week", val);
+  const hasWeekTemplate = () => !!localStorage.getItem("boxplan_template_week_days");
+
+  const handleSaveWeekTemplate = () => {
+    if (hasWeekTemplate() && !window.confirm("Die bestehende Wochenvorlage wird überschrieben. Fortfahren?")) {
+      return;
+    }
+    onSaveWeekTemplate();
+    setWeekTemplateInfo("Vorlage gespeichert.");
+  };
+
+  const handleApplyWeekTemplate = () => {
+    const filled = onApplyWeekTemplate();
+    if (filled < 0) {
+      setWeekTemplateInfo("Noch keine Vorlage gespeichert.");
+      return;
+    }
+    onClose();
   };
 
   const saveYearTemplate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -204,31 +222,37 @@ export const SettingsModal = ({
           {activeTab === "templates" && (
             <>
               <div style={styles.settingsSection}>
-                <span style={styles.settingsLabel}>Wochen-Template</span>
-                <textarea
-                  style={styles.templateInput}
-                  value={weekTemplate}
-                  onChange={saveWeekTemplate}
-                  placeholder="Standard-Inhalt für neue Wochen..."
-                  spellCheck={false}
-                  className="input-focus"
-                />
+                <span style={styles.settingsLabel}>Wochenvorlage</span>
+                <p style={{fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px', lineHeight: '1.5'}}>
+                  Fülle eine Woche so aus, wie sie typischerweise aussieht, und speichere sie als Vorlage.
+                  Beim Einsetzen werden nur leere Boxen gefüllt, vorhandene Einträge bleiben unverändert.
+                </p>
                 <div style={styles.settingsButtonRow}>
-                  <button 
-                    style={styles.secondaryButton}
+                  <button
+                    style={{...styles.secondaryButton, opacity: view === "week" ? 1 : 0.5}}
                     className="btn-secondary"
-                    onClick={() => handleTemplateAction("week", weekTemplate, "append")}
+                    disabled={view !== "week"}
+                    onClick={handleSaveWeekTemplate}
                   >
-                    Anfügen
+                    Aktuelle Woche als Vorlage speichern
                   </button>
-                  <button 
-                    style={styles.secondaryButton}
+                  <button
+                    style={{...styles.secondaryButton, opacity: view === "week" ? 1 : 0.5}}
                     className="btn-secondary"
-                    onClick={() => handleTemplateAction("week", weekTemplate, "replace")}
+                    disabled={view !== "week"}
+                    onClick={handleApplyWeekTemplate}
                   >
-                    Ersetzen
+                    Vorlage in aktuelle Woche einsetzen
                   </button>
                 </div>
+                {view !== "week" && (
+                  <p style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px'}}>
+                    Wechsle in die Wochenansicht, um die Wochenvorlage zu nutzen.
+                  </p>
+                )}
+                {weekTemplateInfo && (
+                  <p style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px'}}>{weekTemplateInfo}</p>
+                )}
               </div>
 
               <div style={styles.settingsSection}>
@@ -294,7 +318,10 @@ export const SettingsModal = ({
               <br />
               <span style={styles.settingsLabel}>Funktionen</span>
               <p style={{fontSize: '13px', lineHeight: '1.5', color: 'var(--text-primary)'}}>
-                <b>Templates:</b> Erstelle Vorlagen für deine Wochen- oder Jahresplanung. 
+                <b>Wochenvorlage:</b> Speichert alle Boxen der aktuellen Woche als Vorlage und setzt sie in leere Boxen einer anderen Woche ein. Vorhandene Einträge bleiben unverändert.
+              </p>
+              <p style={{fontSize: '13px', lineHeight: '1.5', color: 'var(--text-primary)'}}>
+                <b>Jahres-Template:</b> Ein Text für alle Monate.
                 <br/>
                 <i>Anfügen:</i> Fügt den Text unter bestehende Notizen hinzu.
                 <br/>
