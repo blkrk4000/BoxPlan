@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { styles } from "./styles";
 import { TrashIcon, XIcon, DownloadIcon, UploadIcon } from "./Icons";
-import { ViewMode } from "./types";
+import { ViewMode, WEEKDAYS } from "./types";
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -14,6 +14,19 @@ interface SettingsModalProps {
 }
 
 type Tab = "data" | "templates" | "docs" | "about";
+
+const WEEK_TEMPLATE_KEY = "boxplan_template_week_days";
+
+const loadWeekTemplate = (): string[] | null => {
+  try {
+    const raw = localStorage.getItem(WEEK_TEMPLATE_KEY);
+    if (!raw) return null;
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : null;
+  } catch {
+    return null;
+  }
+};
 
 export const SettingsModal = ({
   onClose,
@@ -30,12 +43,14 @@ export const SettingsModal = ({
   // Templates State
   const [yearTemplate, setYearTemplate] = useState("");
   const [weekTemplateInfo, setWeekTemplateInfo] = useState("");
+  const [weekDays, setWeekDays] = useState<string[] | null>(null);
   
   // File Input Ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setYearTemplate(localStorage.getItem("boxplan_template_year") || "");
+    setWeekDays(loadWeekTemplate());
   }, []);
 
   // Handle ESC key to close
@@ -47,13 +62,20 @@ export const SettingsModal = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const hasWeekTemplate = () => !!localStorage.getItem("boxplan_template_week_days");
+  const hasWeekTemplate = !!weekDays && weekDays.some((d) => d && d.trim());
+
+  const editWeekTemplateDay = (index: number, value: string) => {
+    const next = WEEKDAYS.map((_, k) => (k === index ? value : weekDays?.[k] ?? ""));
+    localStorage.setItem(WEEK_TEMPLATE_KEY, JSON.stringify(next));
+    setWeekDays(next);
+  };
 
   const handleSaveWeekTemplate = () => {
-    if (hasWeekTemplate() && !window.confirm("Die bestehende Wochenvorlage wird überschrieben. Fortfahren?")) {
+    if (hasWeekTemplate && !window.confirm("Die bestehende Wochenvorlage wird überschrieben. Fortfahren?")) {
       return;
     }
     onSaveWeekTemplate();
+    setWeekDays(loadWeekTemplate());
     setWeekTemplateInfo("Vorlage gespeichert.");
   };
 
@@ -159,7 +181,7 @@ export const SettingsModal = ({
             className={`tab-btn ${activeTab === "templates" ? 'active' : ''}`}
             onClick={() => setActiveTab("templates")}
           >
-            Templates
+            Templates{hasWeekTemplate ? " ✓" : ""}
           </button>
           <button 
             style={{...styles.tabButton, ...(activeTab === "docs" ? styles.tabButtonActive : {})}}
@@ -227,6 +249,11 @@ export const SettingsModal = ({
                   Fülle eine Woche so aus, wie sie typischerweise aussieht, und speichere sie als Vorlage.
                   Beim Einsetzen werden nur leere Boxen gefüllt, vorhandene Einträge bleiben unverändert.
                 </p>
+                <p style={{fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '10px'}}>
+                  {hasWeekTemplate
+                    ? `✓ Wochenvorlage vorhanden (${weekDays!.filter((d) => d && d.trim()).length} von ${WEEKDAYS.length} Boxen mit Inhalt)`
+                    : "Noch keine Wochenvorlage gespeichert"}
+                </p>
                 <div style={styles.settingsButtonRow}>
                   <button
                     style={{...styles.secondaryButton, opacity: view === "week" ? 1 : 0.5}}
@@ -237,9 +264,9 @@ export const SettingsModal = ({
                     Aktuelle Woche als Vorlage speichern
                   </button>
                   <button
-                    style={{...styles.secondaryButton, opacity: view === "week" ? 1 : 0.5}}
+                    style={{...styles.secondaryButton, opacity: view === "week" && hasWeekTemplate ? 1 : 0.5}}
                     className="btn-secondary"
-                    disabled={view !== "week"}
+                    disabled={view !== "week" || !hasWeekTemplate}
                     onClick={handleApplyWeekTemplate}
                   >
                     Vorlage in aktuelle Woche einsetzen
@@ -253,6 +280,26 @@ export const SettingsModal = ({
                 {weekTemplateInfo && (
                   <p style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px'}}>{weekTemplateInfo}</p>
                 )}
+
+                <details style={{marginTop: '12px'}}>
+                  <summary style={{cursor: 'pointer', fontSize: '13px', color: 'var(--text-primary)'}}>
+                    Wochenvorlage ansehen / bearbeiten
+                  </summary>
+                  <div style={{marginTop: '10px'}}>
+                    {WEEKDAYS.map((day, i) => (
+                      <div key={day} style={{marginBottom: '10px'}}>
+                        <span style={styles.settingsLabel}>{day}</span>
+                        <textarea
+                          style={{...styles.templateInput, minHeight: '90px'}}
+                          value={weekDays?.[i] ?? ""}
+                          onChange={(e) => editWeekTemplateDay(i, e.target.value)}
+                          spellCheck={false}
+                          className="input-focus"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </details>
               </div>
 
               <div style={styles.settingsSection}>
