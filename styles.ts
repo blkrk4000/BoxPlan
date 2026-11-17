@@ -38,9 +38,12 @@ export const styles: Record<string, React.CSSProperties> = {
   headerCenter: {
     display: "flex",
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
-    gap: "16px",
+    gap: "8px 16px",
+    minWidth: 0,
+    maxWidth: "100%",
   },
   // --- Logo Styles ---
   logoContainer: {
@@ -96,6 +99,7 @@ export const styles: Record<string, React.CSSProperties> = {
   },
   dateNav: {
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
     gap: "6px",
   },
