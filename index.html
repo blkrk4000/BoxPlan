@@ -185,14 +185,14 @@
         height: 100%;
         grid-template-columns: repeat(4, 1fr);
       }
-      .grid-week { grid-template-rows: repeat(2, 1fr); }
+      .grid-week { grid-template-rows: repeat(2, minmax(var(--box-min, 0px), 1fr)); }
       .grid-year { grid-template-rows: repeat(3, 1fr); }
 
       @media (max-width: 1000px) {
         .grid {
           grid-template-columns: repeat(2, 1fr);
           grid-template-rows: none;
-          grid-auto-rows: minmax(200px, auto);
+          grid-auto-rows: minmax(var(--box-min, 200px), auto);
           height: auto;
         }
       }

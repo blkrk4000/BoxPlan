@@ -14,6 +14,7 @@ export const CanvasCard = ({
   isToday = false,
   showTodayLabel = true,
   fontSize = 14,
+  maxLines,
 }: { 
   id: string; 
   title: string; 
@@ -23,6 +24,7 @@ export const CanvasCard = ({
   isToday?: boolean;
   showTodayLabel?: boolean;
   fontSize?: number;
+  maxLines?: number;
 }) => {
   const [content, setContent] = useState("");
 
@@ -33,7 +35,19 @@ export const CanvasCard = ({
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newVal = e.target.value;
+    const el = e.target;
+    const newVal = el.value;
+
+    // Zeilenlimit (z. B. 7 Zeilen pro Tagesbox): Eingaben, die mehr Platz brauchen, werden verworfen.
+    // Löschen ist immer erlaubt, damit auch überlange Altdaten bearbeitbar bleiben.
+    if (maxLines && newVal.length > content.length) {
+      const prevHeight = el.style.height;
+      el.style.height = "0px";
+      const neededHeight = el.scrollHeight;
+      el.style.height = prevHeight;
+      if (neededHeight > maxLines * fontSize * 1.5 + 2) return;
+    }
+
     setContent(newVal);
     localStorage.setItem(id, newVal);
   };
@@ -104,7 +118,11 @@ export const CanvasCard = ({
       </div>
       <textarea
         id={id}
-        style={{...styles.textarea, fontSize: `${fontSize}px`}}
+        style={{
+          ...styles.textarea,
+          fontSize: `${fontSize}px`,
+          ...(maxLines ? { minHeight: `${maxLines * fontSize * 1.5}px` } : {}),
+        }}
         value={content}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

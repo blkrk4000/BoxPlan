@@ -28,6 +28,10 @@ export const App = () => {
   const { week, year: isoYear } = useMemo(() => getISOWeekAndYear(currentDate), [currentDate]);
   const year = currentDate.getFullYear(); // Calendar year for Year View
   
+  // Mindesthöhe einer Tagesbox: 7 Textzeilen + Kopfzeile + Innenabstand
+  const DAY_BOX_LINES = 7;
+  const boxMinHeight = Math.ceil(DAY_BOX_LINES * fontSize * 1.5) + 56;
+
   const dateLabel = view === "week" ? `KW ${week} • ${isoYear}` : `${year}`;
 
   // Sanitize theme name to ensure it matches a key in THEMES
@@ -257,7 +261,11 @@ export const App = () => {
       {/* Main Content Area */}
       <main style={styles.main}>
         {view === "week" ? (
-          <div className="grid grid-week" key={`week-${isoYear}-${week}-${resetCount}`}>
+          <div
+            className="grid grid-week"
+            style={{ "--box-min": `${boxMinHeight}px` } as React.CSSProperties}
+            key={`week-${isoYear}-${week}-${resetCount}`}
+          >
             {WEEKDAYS.map((day, index) => {
               // Dynamic ID: mp_w_YYYY_WW_Index
               const id = `mp_w_${isoYear}_${week}_${index}`;
@@ -295,6 +303,7 @@ export const App = () => {
                   isToday={isToday}
                   showTodayLabel={true}
                   fontSize={fontSize}
+                  maxLines={index < 7 ? DAY_BOX_LINES : undefined}
                 />
               );
             })}
