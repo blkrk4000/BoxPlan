@@ -207,6 +207,17 @@
         .hdr-center { order: 3; flex-basis: 100%; }
       }
 
+      /* Handy: Logo + Woche/Jahr + Icons in einer Zeile, Datumsnavigation darunter */
+      @media (max-width: 560px) {
+        .hdr-center { display: contents; }
+        .hdr-pill { order: 2; }
+        .hdr-right { order: 3; }
+        .hdr-datenav { order: 4; flex-basis: 100%; justify-content: center; }
+      }
+      @media (max-width: 440px) {
+        .hdr-version { display: none; }
+      }
+
     </style>
 </head>
   <body>
