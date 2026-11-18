@@ -387,7 +387,7 @@ export const SettingsModal = ({
               <p style={{marginTop: '0px', fontSize: '12px', color: 'var(--text-secondary)'}}>v{__APP_VERSION__}</p>
               
               <div style={{marginTop: '10px', fontSize: '13px', lineHeight: '1.6'}}>
-                Minimalistischer Planer für macOS.<br />
+                Minimalistischer Wochenplaner im Browser.<br />
                 Lizenz: <strong>MIT License</strong>
               </div>
 
