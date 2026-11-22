@@ -38,14 +38,24 @@ export const CanvasCard = ({
     const el = e.target;
     const newVal = el.value;
 
-    // Zeilenlimit (z. B. 7 Zeilen pro Tagesbox): Eingaben, die mehr Platz brauchen, werden verworfen.
-    // Löschen ist immer erlaubt, damit auch überlange Altdaten bearbeitbar bleiben.
+    // Zeilenlimit (z. B. 7 Zeilen pro Tagesbox): Eingaben, die zusätzlichen Platz brauchen UND das Limit
+    // überschreiten, werden verworfen. Eingaben, die den Platzbedarf nicht erhöhen (Tippen in einer
+    // vollen Box ohne Umbruch, Löschen), sind immer erlaubt.
     if (maxLines && newVal.length > content.length) {
+      const limit = maxLines * fontSize * 1.5 + 2;
+      const selStart = el.selectionStart;
+      const selEnd = el.selectionEnd;
       const prevHeight = el.style.height;
-      el.style.height = "0px";
-      const neededHeight = el.scrollHeight;
+      const measure = (val: string) => {
+        el.value = val;
+        el.style.height = "0px";
+        return el.scrollHeight;
+      };
+      const prevNeeded = measure(content);
+      const neededHeight = measure(newVal);
       el.style.height = prevHeight;
-      if (neededHeight > maxLines * fontSize * 1.5 + 2) return;
+      el.setSelectionRange(selStart, selEnd);
+      if (neededHeight > limit && neededHeight > prevNeeded) return;
     }
 
     setContent(newVal);

@@ -43,6 +43,7 @@ export const SettingsModal = ({
   // Templates State
   const [yearTemplate, setYearTemplate] = useState("");
   const [weekTemplateInfo, setWeekTemplateInfo] = useState("");
+  const overlayDown = React.useRef(false);
   const [weekDays, setWeekDays] = useState<string[] | null>(null);
   
   // File Input Ref
@@ -158,7 +159,11 @@ export const SettingsModal = ({
   };
 
   return (
-    <div style={styles.modalOverlay} onClick={onClose}>
+    <div
+      style={styles.modalOverlay}
+      onMouseDown={(e) => { overlayDown.current = e.target === e.currentTarget; }}
+      onClick={(e) => { if (overlayDown.current && e.target === e.currentTarget) onClose(); overlayDown.current = false; }}
+    >
       <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div style={styles.modalHeader}>
           <h2 style={styles.modalTitle}>Einstellungen</h2>
