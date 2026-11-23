@@ -61,11 +61,23 @@ export const App = () => {
     localStorage.setItem("masterplan_theme_mode", themeMode);
     localStorage.setItem("masterplan_theme_name", safeThemeName);
   }, [themeMode, safeThemeName]);
-  const today = new Date();
-  const { week: currentRealWeek, year: currentRealYear } = useMemo(() => getISOWeekAndYear(today), []);
+  // "Heute" aktuell halten: App bleibt oft tagelang offen (PWA) -> bei Fokus/Sichtbarkeit und minütlich neu berechnen
+  const [today, setToday] = useState(() => new Date());
+  useEffect(() => {
+    const refresh = () => setToday((prev) => (prev.toDateString() === new Date().toDateString() ? prev : new Date()));
+    const timer = setInterval(refresh, 60000);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, []);
+  const { week: currentRealWeek, year: currentRealYear } = useMemo(() => getISOWeekAndYear(today), [today]);
   const currentRealMonth = today.getMonth();
   // Adjust JS getDay() (0=Sun, 1=Mon) to our array (0=Mon...6=Sun)
-  const currentRealDayIndex = (today.getDay() + 6) % 7; 
+  const currentRealDayIndex = (today.getDay() + 6) % 7;
 
   // --- SHORTCUTS & FOCUS LOGIC ---
 
